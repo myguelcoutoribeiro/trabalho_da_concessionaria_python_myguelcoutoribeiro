@@ -1,0 +1,126 @@
+print("CONCESSIONÁRIA DE CARROS")
+
+cliente = {
+    "nome": input("Informe seu nome completo:  "),
+    "telefone": input("Informe seu número de telefone:  "),
+    "saldo": float(input("Informe seu saldo inicial (R$):   "))
+}
+
+tabela_de_precos = {
+    "kwid 2019": 66000,
+    "duster 2021": 70000,
+    "kangoo 2013": 69000,
+    "captur 2022": 55000,
+    "kardian 2025": 77800,
+    "stepway 2012": 42000,
+    "oroch 2015": 55000,
+    "boreal 2014": 45000
+}
+
+tabela_de_aluguel = [
+    "KANGOO 2013", "CAPTUR 2022", "KARDIAN 2025",
+    "BOREAL 2014", "OROCH 2015", "STEPWAY 2012"
+]
+
+tabela_de_venda = [
+    "KWID 2019", "CAPTUR 2022", "DUSTER 2021"
+]
+
+
+def menu():
+ print("\n===== CONCESSIONÁRIA DE CARROS =====")
+ print("1 - Comprar o carro")
+ print("2 - Alugar o carro")
+ print("3 - Ver saldo")
+ print("4 - Vender o carro")
+ print("0 - Sair")
+
+def comprar_o_carro(cliente):
+ print("\n--- PROPOSTA DE COMPRA ---")
+ print("Carros disponíveis:")
+ for c in tabela_de_venda:
+     print(c)
+ modelo = input("Digite qual modelo que desejar: ").lower()
+ if modelo in tabela_de_precos:
+     valor = tabela_de_precos[modelo]
+     preco = valor * 1.25
+     print("Valor da tabela fipe:", valor)
+     print("Proposta da venda:", preco)
+     aceitar = input("Aceitar essa proposta? (sim/nao) ").lower()
+     if aceitar == "sim":
+         if cliente["saldo"] >= preco:
+             cliente["saldo"] -= preco
+             print("Compra realizada com sucesso.")
+         else:
+             print("Saldo não suficiente.")
+     else:
+         print("Proposta não aceita.")
+ else:
+     print("Esse carro não se encontra na tabela de carros.")
+
+def alugar_o_carro(cliente):
+ print("\n--- ALUGUEL DE CARRO ---")
+ if len(tabela_de_aluguel) == 0:
+     print("Nenhum carro disponível para aluguel.")
+     return
+ print("Carros disponíveis para aluguel:")
+ for i in range(len(tabela_de_aluguel)):
+     print(i + 1, "-", tabela_de_aluguel[i])
+ escolha = int(input("Escolha o número do carro: ")) - 1
+ if escolha < 0 or escolha >= len(tabela_de_aluguel):
+     print("Opção inválida.")
+     return
+ dias = int(input("Informe o número de dias que deseja: "))
+ total = dias * 77
+ print("Valor total do aluguel: R$", total)
+ if cliente["saldo"] < total:
+     print("Saldo insuficiente.")
+     return
+ confirmar = input("Confirmar aluguel? (sim/nao): ").lower()
+ if confirmar == "sim":
+     cliente["saldo"] -= total
+     carro = tabela_de_aluguel.pop(escolha)
+     print("Você alugou", carro , "parabens!")
+ else:
+     print("Aluguel cancelado...   que pena...")
+     
+     
+     
+     
+     
+     
+
+def vender_o_carro(cliente):
+ print("\n--- VENDA DE CARRO ---")
+ venda = input("Digite o modelo do carro: ").lower()
+ if venda in tabela_de_precos:
+     valor = tabela_de_precos[venda]
+     proposta = valor * 0.88
+     print("Valor fipe:", valor)
+     print("Proposta da empresa:", proposta)
+     confirmar = input("Aceitar proposta? (sim/nao): ").lower()
+     if confirmar == "sim":
+         cliente["saldo"] += proposta
+         print("Venda realizada com sucesso.")
+     else:
+         print("Venda cancelada.")
+ else:
+     print("Este carro não está na tabela de preços. Venda não realizada.")
+
+while True:
+ menu()
+ opcao = input("Escolha uma opção: ")
+ match opcao:
+     case "1":
+         comprar_o_carro(cliente)
+     case "2":
+         alugar_o_carro(cliente)
+     case "3":
+         print("Saldo atual: R$", cliente["saldo"])
+     case "4":
+         vender_o_carro(cliente)
+     case "0":
+         print("Até mais...fique com deus!")
+         break
+     case _:
+         print("Opção inválida. Tente novamente.")
